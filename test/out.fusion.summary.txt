@@ -1,0 +1,2 @@
+Sample_ID	ERG-TMPRSS2
+Tumor_RNA_TCGA-HC-7819-01A-11R-2118-07.sorted.bam	48

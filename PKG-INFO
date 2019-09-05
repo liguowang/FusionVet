@@ -1,0 +1,19 @@
+Metadata-Version: 1.0
+Name: FusionVet
+Version: 0.1.0
+Summary:  Gene Fusion Visualization and Evaluation Tool (FusionVet)
+Home-page: https://fusionvet.readthedocs.io/en/latest/index.html
+Author: Liguo Wang
+Author-email: wangliguo78@gmail.com
+License: MIT
+Description: FusionVet (Fusion Visualization and Evaluation Tool) is designed to validate and visualize *known* gene fusions from RNA-seq BAM files.
+Platform: Linux
+Platform: MacOS
+Classifier: Development Status :: 1 - productive
+Classifier: Environment :: Console
+Classifier: Intended Audience :: Developers
+Classifier: License :: MIT
+Classifier: Operating System :: MacOS :: MacOS X
+Classifier: Operating System :: POSIX
+Classifier: Programming Language :: Python
+Requires: cython (>=0.17)
