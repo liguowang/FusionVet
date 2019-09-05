@@ -1,4 +1,6 @@
-import os,sys
+#!/usr/bin/env python3
+
+import sys
 from time import strftime
 from os.path import basename
 from optparse import OptionParser

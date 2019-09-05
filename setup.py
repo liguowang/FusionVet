@@ -22,7 +22,7 @@ def main():
             author_email ="wangliguo78@gmail.com",
             platforms = ['Linux','MacOS'],
             requires = [],
-            install_requires = ['numpy','scipy','pysam','pybigwig'], 
+            install_requires = ['numpy','scipy','pysam'], 
             description = "A bioinformatics tool to visualize and evaluate *known* gene fusions",
             url = "https://fusionvet.readthedocs.io/en/latest/index.html",
             zip_safe = False,
