@@ -6,7 +6,7 @@ from time import strftime
 from vetmodule.Overlap import is_overlap
 from vetmodule.ReadFusion import get_coord
 
-def get_aberrant_reads(bam_file, coord_file, out_file, q_cut):
+def get_aberrant_reads(bam_file, coord_file, out_file, q_cut, keep_unknown):
 	'''
 	Extract reads supporting gene fusions and save them into separate BAM and BED files.
 	Two type of reads will be identified including "split read" and "read pairs". A "split
@@ -30,6 +30,8 @@ def get_aberrant_reads(bam_file, coord_file, out_file, q_cut):
 		Prefix of output files. "out_file.fusion.bam" will be created.
 	q_cut : int
 		Mapping quality score cutoff. 	
+	keep_unknown : bool
+		Keep alignments with unknown mappingn quality
 	
 	Notes
 	------
@@ -51,9 +53,7 @@ def get_aberrant_reads(bam_file, coord_file, out_file, q_cut):
 	support_Frag = collections.defaultdict(int)	# including supporting split read and read-pairs
 	for (Achr, Ast, Aend, Aname, Bchr, Bst, Bend,Bname) in get_coord(coord_file):
 
-		fusion_name = Aname + "-" + Bname
-		split_read = 0	#split read only + split/paired
-		pair_read = 0	#pair only
+		fusion_name = Aname + "--" + Bname
 		
 		# alignments from gene A
 		for aligned_read in samfile.fetch(Achr, Ast, Aend):
@@ -61,7 +61,7 @@ def get_aberrant_reads(bam_file, coord_file, out_file, q_cut):
 			if aligned_read.is_secondary: continue
 			if aligned_read.is_unmapped: continue
 			if aligned_read.mapping_quality < q_cut: continue
-			if aligned_read.mapping_quality == 255: continue
+			if (aligned_read.mapping_quality == 255) and (keep_unknown is False): continue
 			if aligned_read.is_duplicate: continue
 			
 			read_name = aligned_read.query_name
@@ -72,6 +72,7 @@ def get_aberrant_reads(bam_file, coord_file, out_file, q_cut):
 			read_map_chr = aligned_read.reference_name		# chrom
 			read_map_start = aligned_read.reference_start	# start (0-based)
 			read_map_end = aligned_read.reference_end		# end
+			
 			
 			# genomic span of mate
 			mate_map_chr = 'chr1000'
@@ -85,23 +86,19 @@ def get_aberrant_reads(bam_file, coord_file, out_file, q_cut):
 			
 			# *genomic span of query read* vs gene B
 			if is_overlap(read_map_chr, read_map_start, read_map_end, Bchr, Bst, Bend):
-				
+				#print(aligned_read)
 				#support by both split-read and read-pair
 				if is_overlap(mate_map_chr, mate_map_start, mate_map_end, Bchr, Bst, Bend):
-					if read_name not in read_names:
-						split_read += 1
-						read_names[read_name] = [("SR", 3, "i"),("FC", fusion_name,'Z')]
+					read_names[read_name] = [("SR", 3, "i"),("FN", fusion_name,'Z')]
 				#support only by split-read
 				else:
-					if read_name not in read_names:
-						split_read += 1
-						read_names[read_name] = [("SR", 1, "i"),("FC", fusion_name,'Z')]
+					read_names[read_name] = [("SR", 1, "i"),("FN", fusion_name,'Z')]
 			else:
 				#support only by read-pair
+				
 				if is_overlap(mate_map_chr, mate_map_start, mate_map_end, Bchr, Bst, Bend):
-					if read_name not in read_names:
-						pair_read += 1
-						read_names[read_name] = [("SR", 2, "i"),("FC", fusion_name,'Z')]
+					#print ("A", read_name, read_map_chr, read_map_start, read_map_end)
+					read_names[read_name] = [("SR", 2, "i"),("FN", fusion_name,'Z')]
 				else:
 					pass		
 		
@@ -111,7 +108,7 @@ def get_aberrant_reads(bam_file, coord_file, out_file, q_cut):
 			if aligned_read.is_secondary: continue
 			if aligned_read.is_unmapped: continue
 			if aligned_read.mapping_quality < q_cut: continue
-			if aligned_read.mapping_quality == 255: continue
+			if (aligned_read.mapping_quality == 255) and (keep_unknown is False): continue
 			if aligned_read.is_duplicate: continue
 
 			read_name = aligned_read.query_name
@@ -137,61 +134,57 @@ def get_aberrant_reads(bam_file, coord_file, out_file, q_cut):
 			if is_overlap(read_map_chr, read_map_start, read_map_end, Achr, Ast, Aend):
 				#support by both split-read and read-pair
 				if is_overlap(mate_map_chr, mate_map_start, mate_map_end, Achr, Ast, Aend):
-					if read_name not in read_names:
-						split_read += 1
-						read_names[read_name] = [("SR", 3, "i"),("FC", fusion_name,'Z')]
+					read_names[read_name] = [("SR", 3, "i"),("FN", fusion_name,'Z')]
 				#support only by split-read
 				else:
-					if read_name not in read_names:
-						split_read += 1
-						read_names[read_name] = [("SR", 1, "i"),("FC", fusion_name,'Z')]
+					read_names[read_name] = [("SR", 1, "i"),("FN", fusion_name,'Z')]
 			else:
 				#support only by read-pair
 				if is_overlap(mate_map_chr, mate_map_start, mate_map_end, Achr, Ast, Aend):
-					if read_name not in read_names:
-						pair_read += 1
-						read_names[read_name] = [("SR", 2, "i"),("FC", fusion_name,'Z')]
+					#print ("B", read_name, read_map_chr, read_map_start, read_map_end)
+					read_names[read_name] = [("SR", 2, "i"),("FN", fusion_name,'Z')]
 				else:
 					pass
-		support_Frag[fusion_name] = split_read + pair_read		
+		support_Frag[fusion_name] = len(read_names)		
 	
 	# write support read to another BAM file
 	print("@ " + strftime("%Y-%m-%d %H:%M:%S") + ": Writing fusion supporting alignments to \"%s\"" % (out_file + '.fusion.bam'), file=sys.stderr)
 	OUT_BAM = pysam.Samfile(out_file + '.fusion.bam', 'wb',template=samfile)
-	for aligned_read in samfile.fetch(Achr, Ast, Aend):
-		if aligned_read.is_qcfail: continue
-		if aligned_read.is_secondary: continue
-		if aligned_read.is_unmapped: continue
-		if aligned_read.mapping_quality < q_cut: continue
-		if aligned_read.mapping_quality == 255: continue
-		if aligned_read.is_duplicate: continue
-
-		read_id = aligned_read.query_name
-		if read_id.endswith('/1') or read_id.endswith('/2'):
-			read_id = read_id[:-2]	#remove last char
-		
-		
-		if read_id in read_names.keys():
-			#print (read_id)
-			aligned_read.tags = aligned_read.tags + read_names[read_id]
-			OUT_BAM.write(aligned_read)
-
-	for aligned_read in samfile.fetch(Bchr, Bst, Bend):
-		if aligned_read.is_qcfail: continue
-		if aligned_read.is_secondary: continue
-		if aligned_read.is_unmapped: continue
-		if aligned_read.mapping_quality < q_cut: continue
-		if aligned_read.mapping_quality == 255: continue
-		if aligned_read.is_duplicate: continue
-
-		read_id = aligned_read.query_name
-		if read_id.endswith('/1') or read_id.endswith('/2'):
-			read_id = read_id[:-2]	#remove last char
-		
-		if read_id in read_names.keys():
-			#print (read_id)
-			aligned_read.tags = aligned_read.tags + read_names[read_id]
-			OUT_BAM.write(aligned_read)
+	for (Achr, Ast, Aend, Aname, Bchr, Bst, Bend,Bname) in get_coord(coord_file):
+		for aligned_read in samfile.fetch(Achr, Ast, Aend):
+			if aligned_read.is_qcfail: continue
+			if aligned_read.is_secondary: continue
+			if aligned_read.is_unmapped: continue
+			if aligned_read.mapping_quality < q_cut: continue
+			if (aligned_read.mapping_quality == 255) and (keep_unknown is False): continue
+			if aligned_read.is_duplicate: continue
+	
+			read_id = aligned_read.query_name
+			if read_id.endswith('/1') or read_id.endswith('/2'):
+				read_id = read_id[:-2]	#remove last char
+			
+			
+			if read_id in read_names.keys():
+				#print (read_id)
+				aligned_read.tags = aligned_read.tags + read_names[read_id]
+				OUT_BAM.write(aligned_read)
+	
+		for aligned_read in samfile.fetch(Bchr, Bst, Bend):
+			if aligned_read.is_qcfail: continue
+			if aligned_read.is_secondary: continue
+			if aligned_read.is_unmapped: continue
+			if aligned_read.mapping_quality < q_cut: continue
+			if (aligned_read.mapping_quality == 255) and (keep_unknown is False): continue
+			if aligned_read.is_duplicate: continue
+	
+			read_id = aligned_read.query_name
+			if read_id.endswith('/1') or read_id.endswith('/2'):
+				read_id = read_id[:-2]	#remove last char
+			
+			if read_id in read_names.keys():
+				#print (read_id)
+				aligned_read.tags = aligned_read.tags + read_names[read_id]
+				OUT_BAM.write(aligned_read)
 	
 	OUT_BAM.close()
 	
@@ -205,7 +198,7 @@ def get_aberrant_reads(bam_file, coord_file, out_file, q_cut):
 	return (support_Frag)
 
 
-def count_fragment(bam_file,q_cut = 30):
+def count_fragment(bam_file,keep_unknown, q_cut = 30):
 	'''
 	Return total fragment (read pairs) and properly mapped read pairs.
 	'''
@@ -221,7 +214,7 @@ def count_fragment(bam_file,q_cut = 30):
 				if aligned_read.is_secondary: continue
 				if aligned_read.is_unmapped: continue
 				if aligned_read.mapq < q_cut: continue
-				if aligned_read.mapping_quality == 255: continue
+				if (aligned_read.mapping_quality == 255) and (keep_unknown is False): continue
 				total_frag += 1
 			else:
 			
