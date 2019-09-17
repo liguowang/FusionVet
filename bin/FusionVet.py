@@ -14,7 +14,7 @@ __contributor__="Liguo Wang"
 __copyright__ = "Copyright 2019, Mayo Clinic"
 __credits__ = []
 __license__ = "GPL"
-__version__="0.1.0"
+__version__="1.0.1"
 __maintainer__ = "Liguo Wang"
 __email__ = "wang.liguo@mayo.edu"
 __status__ = "4 - Beta"
@@ -54,7 +54,7 @@ if __name__=='__main__':
     print("@ " + strftime("%Y-%m-%d %H:%M:%S") + ": Save results to file \"%s\" "  % (options.output_file + '.fusion.summary.txt'), file=sys.stderr)
     STAT.close()
     
-    print("@ " + strftime("%Y-%m-%d %H:%M:%S") + ": Convert and consolidate fusion supporting reads into BED file \"%s\" "  % (options.output_file + '.fusion.bed'), file=sys.stderr)
+    print("@ " + strftime("%Y-%m-%d %H:%M:%S") + ": Convert and consolidate fusion supporting reads into BED format file \"%s\" and Intersection format file \"%s\""  % (options.output_file + '.fusion.bed', options.output_file + '.fusion.interact.bed'), file=sys.stderr)
     bam2bed(options.output_file + '.fusion.sorted.bam', options.output_file + '.fusion.bed',track_header = options.header, interact_file = options.output_file + '.fusion.interact.bed', q_cut = options.map_qual)
     
     

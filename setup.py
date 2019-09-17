@@ -8,7 +8,7 @@ Setup script for FusionVet  -- A bioinformatics tool to visualize and evaluate *
 
 def main():
     setup(  name = "FusionVet",
-            version = "1.0.0",
+            version = "1.0.1",
             python_requires='>=3.5',
             py_modules = [ 'psyco_full' ],
             packages = find_packages( 'lib' ),

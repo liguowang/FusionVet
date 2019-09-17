@@ -52,9 +52,10 @@ def get_aberrant_reads(bam_file, coord_file, out_file, q_cut, keep_unknown):
 	read_names = {}	#read ids supporting fusion transcripts
 	support_Frag = collections.defaultdict(int)	# including supporting split read and read-pairs
 	for (Achr, Ast, Aend, Aname, Bchr, Bst, Bend,Bname) in get_coord(coord_file):
-
-		fusion_name = Aname + "--" + Bname
 		
+		fusion_name = Aname + "--" + Bname
+		print("@ " + strftime("%Y-%m-%d %H:%M:%S") + ": Processing fusion: %s" % fusion_name, file=sys.stderr)
+		tmp = set()
 		# alignments from gene A
 		for aligned_read in samfile.fetch(Achr, Ast, Aend):
 			if aligned_read.is_qcfail: continue
@@ -90,15 +91,17 @@ def get_aberrant_reads(bam_file, coord_file, out_file, q_cut, keep_unknown):
 				#support by both split-read and read-pair
 				if is_overlap(mate_map_chr, mate_map_start, mate_map_end, Bchr, Bst, Bend):
 					read_names[read_name] = [("SR", 3, "i"),("FN", fusion_name,'Z')]
+					tmp.add(read_name)
 				#support only by split-read
 				else:
 					read_names[read_name] = [("SR", 1, "i"),("FN", fusion_name,'Z')]
+					tmp.add(read_name)
 			else:
 				#support only by read-pair
 				
 				if is_overlap(mate_map_chr, mate_map_start, mate_map_end, Bchr, Bst, Bend):
-					#print ("A", read_name, read_map_chr, read_map_start, read_map_end)
 					read_names[read_name] = [("SR", 2, "i"),("FN", fusion_name,'Z')]
+					tmp.add(read_name)
 				else:
 					pass		
 		
@@ -135,18 +138,20 @@ def get_aberrant_reads(bam_file, coord_file, out_file, q_cut, keep_unknown):
 				#support by both split-read and read-pair
 				if is_overlap(mate_map_chr, mate_map_start, mate_map_end, Achr, Ast, Aend):
 					read_names[read_name] = [("SR", 3, "i"),("FN", fusion_name,'Z')]
+					tmp.add(read_name)
 				#support only by split-read
 				else:
 					read_names[read_name] = [("SR", 1, "i"),("FN", fusion_name,'Z')]
+					tmp.add(read_name)
 			else:
 				#support only by read-pair
 				if is_overlap(mate_map_chr, mate_map_start, mate_map_end, Achr, Ast, Aend):
-					#print ("B", read_name, read_map_chr, read_map_start, read_map_end)
 					read_names[read_name] = [("SR", 2, "i"),("FN", fusion_name,'Z')]
+					tmp.add(read_name)
 				else:
 					pass
-		support_Frag[fusion_name] = len(read_names)		
-	
+		support_Frag[fusion_name] = len(tmp)
+		#print ("Total reads: %d" % support_Frag[fusion_name])
 	# write support read to another BAM file
 	print("@ " + strftime("%Y-%m-%d %H:%M:%S") + ": Writing fusion supporting alignments to \"%s\"" % (out_file + '.fusion.bam'), file=sys.stderr)
 	OUT_BAM = pysam.Samfile(out_file + '.fusion.bam', 'wb',template=samfile)

@@ -208,7 +208,7 @@ def bam2bed(bam_file, bed_file, track_header, interact_file, q_cut):
 	for k,v in InterChrom_list.items():
 	
 		name = k
-		print (name)
+		#print (name)
 		score = 100
 		value = 100.0
 		exp = 'Inter_Chrom_fusion'
