@@ -1,82 +1,116 @@
 
-<!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta charset="utf-8" />
-    <title>Introduction &#8212; FusionVet 0.1.0 documentation</title>
-    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="_static/language_data.js"></script>
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>&lt;no title&gt; &mdash; FusionVet 1.0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="1. Overview" href="overview.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
    
-  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
-  
-  
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
-
-  </head><body>
-  
-
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
           
 
-          <div class="body" role="main">
+          
+            <a href="#" class="icon icon-home"> FusionVet
+          
+
+          
+          </a>
+
+          
             
-  <div class="section" id="introduction">
-<h1>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h1>
-<p>Gene fusion is one of the most common somatic alterations that plays an important role in
-tumorgenesis. Well-known examples include the intra-chromosomal TMPRSS2-ERG fusions
-in prostate cancer, and the inter-chromosomal BCR-ABL fusions in chronic myelogenous
-leukemia (CML). With the advent of next generation sequencing technologies especially RNA-seq
-and the development of dozens of fusion detection tools, most recurrent
-gene fusions in common cancers have been identified. These fusion are cataloged in databases
-such as <a class="reference external" href="https://cancer.sanger.ac.uk/cosmic/fusion">COSMIC</a> ,
-<a class="reference external" href="https://ccsm.uth.edu/FusionGDB">FusionGDB</a>
-, <a class="reference external" href="https://fusionhub.persistent.co.in">FusionHub</a>,
-<a class="reference external" href="http://203.255.191.229:8080/chimerdbv31/mhelp.cdb">ChimerDB</a>
-and <a class="reference external" href="https://tumorfusions.org">TumorFusions</a> ).</p>
-<p>To facilitate molecular testing, we developed FusionVet (Fusion Visualization and
-Evaluation Tool) to quickly (and accurately) examine if a gene fusion with clinical
-significance exists in a particular sample.</p>
-</div>
-<div class="section" id="input-files">
-<h1>Input files<a class="headerlink" href="#input-files" title="Permalink to this headline">¶</a></h1>
-<p>FusionVet needs two input files: one is <a class="reference external" href="https://en.wikipedia.org/wiki/SAM_(file_format)">BAM</a>
-file (must be sorted and indexed), another one is gene fusion file. The gene fusion file is a
-plain text file with 8 columns separated by space or tab (The first 4 columns describe
-the “chrom”, “transcription_start” and “transcription_end” of gene-1, the other 4 columns
-describe the same information for gene-2). Below example file define two fusions:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">chr21</span>   <span class="mi">39739182</span>        <span class="mi">40033704</span>        <span class="n">ERG</span>     <span class="n">chr21</span>   <span class="mi">42836477</span>        <span class="mi">42880085</span>        <span class="n">TMPRSS2</span>
-<span class="n">chr14</span>   <span class="mi">38033152</span>        <span class="mi">38033701</span>        <span class="n">EST14</span>         <span class="n">chr7</span>    <span class="mi">13930855</span>        <span class="mi">14031050</span>        <span class="n">ETV1</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="output-files">
-<h1>Output files<a class="headerlink" href="#output-files" title="Permalink to this headline">¶</a></h1>
-</div>
-<div class="section" id="performance">
-<h1>Performance<a class="headerlink" href="#performance" title="Permalink to this headline">¶</a></h1>
-<p>FusionVet takes <em>less than 2 seconds</em> to scan a gene fusion from a typical
-<a class="reference external" href="https://www.cancer.gov/about-nci/organization/ccg/research/structural-genomics/tcga">TCGA</a>
-RNA-seq <a class="reference external" href="https://en.wikipedia.org/wiki/SAM_(file_format)">BAM</a> file.</p>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
 </div>
 
+          
+        </div>
 
-          </div>
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">FusionVet Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">1. Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">2. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">3. Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="input_file.html">4. Input files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="output_file.html">5. Output files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="performance.html">6. Performance</a></li>
+</ul>
+
+            
           
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-<h1 class="logo"><a href="#">FusionVet</a></h1>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">FusionVet</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
 
 
 
@@ -85,51 +119,110 @@ RNA-seq <a class="reference external" href="https://en.wikipedia.org/wiki/SAM_(f
 
 
 
-<h3>Navigation</h3>
 
-<div class="relations">
-<h3>Related Topics</h3>
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="#">Docs</a> &raquo;</li>
+        
+      <li>&lt;no title&gt;</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="toctree-wrapper compound">
+<p class="caption"><span class="caption-text">FusionVet Documentation</span></p>
 <ul>
-  <li><a href="#">Documentation overview</a><ul>
-  </ul></li>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">1. Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">2. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">3. Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="input_file.html">4. Input files</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="input_file.html#bam-file">4.1. BAM file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="input_file.html#gene-fusion-file">4.2. gene fusion file</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="output_file.html">5. Output files</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="output_file.html#prefix-fusion-sorted-bam">5.1. prefix.fusion.sorted.bam</a></li>
+<li class="toctree-l2"><a class="reference internal" href="output_file.html#prefix-fusion-sorted-bam-bai">5.2. prefix.fusion.sorted.bam.bai</a></li>
+<li class="toctree-l2"><a class="reference internal" href="output_file.html#prefix-fusion-bed">5.3. prefix.fusion.bed</a></li>
+<li class="toctree-l2"><a class="reference internal" href="output_file.html#prefix-fusion-interact-bed">5.4. prefix.fusion.interact.bed</a></li>
+<li class="toctree-l2"><a class="reference internal" href="output_file.html#prefix-fusion-summary-txt">5.5. prefix.fusion.summary.txt</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="performance.html">6. Performance</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="performance.html#speed">6.1. Speed</a></li>
+<li class="toctree-l2"><a class="reference internal" href="performance.html#comparison-to-other-tools">6.2. Comparison to other tools</a></li>
+</ul>
+</li>
 </ul>
 </div>
-<div id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
-      <input type="submit" value="Go" />
-    </form>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="overview.html" class="btn btn-neutral float-right" title="1. Overview" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
     </div>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+  
 
+  <hr/>
 
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Liguo Wang
 
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
-
-
-
+</footer>
 
         </div>
       </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="footer">
-      &copy;2019, Wei Ting, Liguo Wang.
-      
-      |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
-      
-      |
-      <a href="_sources/index.rst.txt"
-          rel="nofollow">Page source</a>
-    </div>
 
-    
+    </section>
 
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
     
-  </body>
+   
+
+</body>
 </html>
