@@ -222,7 +222,7 @@ def bam2bed(bam_file, bed_file, track_header, interact_file, q_cut):
 			for block2 in v[1]:
 				targetChrom, targetStart,targetEnd,targetStrand = block2
 				targetName = targetChrom + ':' + str(targetStart) + '-' + str(targetEnd)
-				print ("\t".join([str(i) for i in (sourceChrom, sourceStart, sourceEnd, name, score, value, exp, color, sourceChrom, sourceStart,sourceEnd,sourceName, sourceStrand, targetChrom, targetStart,targetEnd,targetName, targetStrand)]), file=OUT2)
+				print ("\t".join([str(i) for i in (sourceChrom, sourceStart, sourceEnd, name, score, value, exp, color, targetChrom, targetStart,targetEnd,targetName, targetStrand, sourceChrom, sourceStart,sourceEnd,sourceName, sourceStrand)]), file=OUT2)
 				
 	OUT2.close()
 	
