@@ -42,13 +42,18 @@ prefix.fusion.bed
 This is standard `BED12 <https://genome.ucsc.edu/FAQ/FAQformat.html#format1>`_ format file.
 Paired reads are merged into a single BED entry. This file can be uploaded to `UCSC 
 genome browser <https://genome.ucsc.edu>`_ to visualize intra-chromosomal fusions. This is
-useful to identify the **fusion point**.  
+useful to identify the **fusion point**. If this file is too big to upload to UCSC genome
+browser directly, you could try to convert this BED file into bigBed file (the program `bedToBigBed <http://hgdownload.soe.ucsc.edu/admin/exe/>`_)
+ following this `instruction <https://genome.ucsc.edu/goldenPath/help/bigBed.html>`_. 
 
 prefix.fusion.interact.bed
 --------------------------
 This is `Interact <https://genome.ucsc.edu/goldenPath/help/interact.html>`_ format file. This
 file can be uploaded to  `UCSC genome browser <https://genome.ucsc.edu>`_ to visualize both
-intra-chromosomal and inter-chromosomal fusions.
+intra-chromosomal and inter-chromosomal fusions. If this file is too big to upload to UCSC genome
+browser directly, you could try to convert this Interact file into bigInteract file (the program `bedToBigBed <http://hgdownload.soe.ucsc.edu/admin/exe/>`_)
+ following this `instruction <https://genome.ucsc.edu/goldenPath/help/interact.html>`_. 
+
 
 **Intra-chromosomal** fusions will be visualized as below (Note the two breaking points on ERG gene).
 Toggle between **full** display mode and **pack**/**squish** display mode help identify the exact breaking point(s).
