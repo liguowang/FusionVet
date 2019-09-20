@@ -69,4 +69,8 @@ Toggle between **full** display mode and **pack**/**squish** display mode help i
 prefix.fusion.summary.txt
 --------------------------
 Report the total number of supporting RNA fragments (split reads + read pairs) for each fusion.
-   
+
+::
+
+ Sample_ID       ERG--TMPRSS2
+ Tumor_RNA_TCGA-HC-7819-01A-11R-2118-07.bam      48

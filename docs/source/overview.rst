@@ -14,5 +14,9 @@ and `TumorFusions <https://tumorfusions.org>`_ ).
 
 To facilitate molecular testing, we developed FusionVet (Fusion Visualization and
 Evaluation Tool) to quickly (and accurately) examine if a gene fusion with clinical
-significance exists in a particular sample.
+significance exists in a particular sample or not.
 
+.. image:: ./_static/workflow.png
+   :height: 500 px
+   :width: 800 px
+   :scale: 80 %     
