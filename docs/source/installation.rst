@@ -7,7 +7,7 @@ Use this command to install FusionVet and its dependency packages.
 
  $ pip3 install git+https://github.com/liguowang/fusionvet.git
 
-or 
+Alternatively, it is also available on `PyPI <https://pypi.org/project/FusionVet/>`_.
 
 :: 
 
