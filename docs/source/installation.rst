@@ -6,3 +6,9 @@ Use this command to install FusionVet and its dependency packages.
 ::
 
  $ pip3 install git+https://github.com/liguowang/fusionvet.git
+
+or 
+
+:: 
+
+ $ pip3 install fusionvet
